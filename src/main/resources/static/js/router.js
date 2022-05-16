@@ -1,3 +1,6 @@
+//CENTRAL PIECE OF THE PROJECT
+//GOING TO DO A LOT OF WORK IN THIS PORTION OF THE PROJECT
+
 import Home from "./views/Home.js";
 import PostIndex from "./views/PostIndex.js";
 import About from "./views/About.js";
