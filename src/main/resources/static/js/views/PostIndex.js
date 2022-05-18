@@ -1,4 +1,4 @@
-import createView from "../createView";
+import createView from ".//js/createView";
 
 const BASE_URL = `http:localhost:8080/api/posts`;
 let requestedMethod = "POST";
@@ -68,7 +68,7 @@ function createAddPostListener() {
             }).catch(error => {
             console.log(error);
             createView("/posts");
-        });.finally( () => {
+        }).finally( () => {
             postID = "";
             requestedMethod = "POST";
             createView("/posts")

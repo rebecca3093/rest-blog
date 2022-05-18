@@ -29,6 +29,13 @@ export default function router(URI) {
             title: "Login",
             viewEvent: LoginEvent
         },
+        '/register':(
+            returnView: Register,
+            state: {},
+            uri: '/register',
+            viewEvent: RegisterEvent
+    },
+
         '/posts': {
             returnView: PostIndex,
             state: {
