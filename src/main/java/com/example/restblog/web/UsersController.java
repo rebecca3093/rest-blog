@@ -19,7 +19,7 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    publis User getById(@PathVariable long id){
+    public User getById(@PathVariable long id){
         for (User user: userList){
             if (user.getId().equals(id)){
                 return user;

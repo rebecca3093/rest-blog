@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
 
-    @RequestMapping({"/", "/about", "/posts", "/login", "/home"})
-    public String showview(){
+    @RequestMapping({"/", "/about", "/posts", "/login", "/home", "/register"})
+    public String showView(){
         return "forward: /index.html";
     }
 
