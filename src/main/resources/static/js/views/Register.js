@@ -14,14 +14,14 @@ export default function Register() {
             <label for="username">Username</label>
             <input id="username" name="username" type="text"/>
             <label for="email">Email</label>
-            <input id="email type=email" name="email">
+            <input id="email type="email" name="email">
             <label for="password">Password</label>
             <input id="password" name="password" type="password"/>
             <input id="register-btn" type="button" value="Register"/>
         </form>
         </body>
-        </html>`;
-
+        </html>
+    `;
 }
 
 export function RegisterEvent(){
@@ -44,6 +44,5 @@ export function RegisterEvent(){
             .then(res => res.json())
             .then(data => console.log(data))
             .catch(err => console.log(err))
-
     })
 }

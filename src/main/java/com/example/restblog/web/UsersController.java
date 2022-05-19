@@ -51,7 +51,7 @@ public class UsersController {
     public void updatePassword ( @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword){
         User userToUpdate = getById(id);
         userToUpdate.setPassword(newPassword);
-        System.out.println(userToUpdate.);
+        System.out.println(userToUpdate.getPassword());
     }
 
     private List<User> setUserList() {

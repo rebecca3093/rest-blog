@@ -8,7 +8,8 @@ import Error404 from "./views/Error404.js";
 import Loading from "./views/Loading.js";
 import Login from "./views/Login.js";
 import LoginEvent from "./auth.js";
-import userInformation from "./views/User";
+import Register, {RegisterEvent} from "./views/Register.js";
+import UserInfo, {UserEvent} from "./views/User.js";
 
 
 
@@ -42,19 +43,20 @@ export default function router(URI) {
         '/posts': {
             returnView: PostIndex,
             state: {
-                posts: '/api/posts'
+                posts: '/api/posts',
             },
             uri: '/posts',
             title: 'All Posts',
             viewEvent: PostsEvent
         },
-        '/user':{
-            returnView: userInformation,
-            state:{
-                user: '/api/user/1'
+        '/user': {
+            returnView: UserInfo,
+            state: {
+                user: '/api/users/1'
             },
-            uri: '.user',
-            title: 'User'
+            uri: '/user',
+            title: 'User',
+            viewEvent: UserEvent
         },
         '/about': {
             returnView: About,
