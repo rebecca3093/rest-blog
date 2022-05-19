@@ -14,13 +14,13 @@ public class UsersController {
 
     @GetMapping
     public List<User> getAll(){
-        return userList();
+        return userList;
 
     }
 
     @GetMapping("{id}")
     public User getById(@PathVariable long id){
-        for (User user: userList){
+        for (User user : userList){
             if (user.getId().equals(id)){
                 return user;
             }
@@ -36,8 +36,8 @@ public class UsersController {
 
     private List<User> setUserList(){
         List<User> userList = new ArrayList<>();
-                userList.add(new User("billybobboy", "billy@bob.com", "12345"));
-
-
+                userList.add(new User("haylieWilliams", "hailey@williams.com", "12345"));
+                userList.add(new User("patrickStump", "patrick@stump.com", "54321"));
+                return userList;
     }
 }

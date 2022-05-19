@@ -9,23 +9,26 @@ import java.util.Objects;
 
 @CrossOrigin
 @RestController
-    @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
-    public class PostsController {
+@RequestMapping(value = "/api/posts", headers = "Accept=application/json")
+public class PostsController {
 
-    List<Post> posts = new ArrayList<>();
+    List<Post> posts = setPostList();
+
+    // List<Post> posts = new ArrayList<>();
+
 
     @GetMapping
     public List<Post> getAll() {
-        posts.add(new Post(1L, "This is my first title", "This is some content"));
-        posts.add(new Post(2L, "This is my second title", "This is more content"));
-        posts.add(new Post(3L, "This is my third title", "This is even more content"));
+        //posts.add(new Post(1L, "This is my first title", "This is some content"));
+        //posts.add(new Post(2L, "This is my second title", "This is more content"));
+        //posts.add(new Post(3L, "This is my third title", "This is even more content"));
         return posts;
     }
 
     @GetMapping("{id}")
-    public Post getById(@PathVariable Long id){
-        for(Post post: getAll()){
-            if(Objects.equals(post.getId(), id)){
+    public Post getById(@PathVariable Long id) {
+        for (Post post : getAll()) {
+            if (Objects.equals(post.getId(), id)) {
                 return post;
             }
         }
@@ -33,19 +36,33 @@ import java.util.Objects;
     }
 
     @PostMapping
-        public void createPost(@RequestBody Post postItem){
+    public void createPost(@RequestBody Post postItem) {
         System.out.println(postItem);
 
     }
 
     @PutMapping("{id}")
-    public void updatePost(@PathVariable Long id, @RequestBody Post updateItem){
-        System.out.println(updateItem);
+    public void updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
+        for (Post post :posts){
+            if (post.getId().equals(id)){
+                post.setContent(updatePost.getContent());
+                post.setTitle(updatePost.getTitle());
+            }
+        }
+        System.out.println(updatePost);
     }
 
     @DeleteMapping("{id}")
-    public void deletePost(@PathVariable Long id){
+    public void deletePost(@PathVariable Long id) {
         System.out.println("Delete Post with id: " + id);
+    }
+
+    private List<Post> setPostList(){
+        List<Post> postList = new ArrayList<>();
+        postList.add(new Post(1L, "This is my first title", "This is some content"));
+        postList.add(new Post(2L, "This is my second title", "This is more content"));
+        postList.add(new Post(3L, "This is my third title", "This is even more content"));
+        return postList;
     }
 }
 

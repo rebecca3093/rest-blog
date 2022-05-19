@@ -5,29 +5,31 @@ import java.time.LocalDateTime;
 
 public class User {
 
-
-
     private Long id;
     private String username;
     private String email;
     private String password;
     private LocalDateTime createdAt;
-    private Role role;
+    private Role role = Role.USER;
 
     public enum Role {USER, ADMIN}
 
 
-    public User(Long id) {
-        this.id = id;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
-    public User(Long id, String username, String email, String password, LocalDateTime createdAt, Role role) {
+    public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.createdAt = createdAt;
-        this.role = role;
+    }
+
+    public User() {
+
     }
 
     public Long getId() {
@@ -76,6 +78,18 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", createdAt=" + createdAt +
+                ", role=" + role +
+                '}';
     }
 }
 
