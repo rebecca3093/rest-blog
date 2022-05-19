@@ -24,25 +24,26 @@ export default function Register() {
 
 }
 
-export Function RegisterEvent(){
+export function RegisterEvent(){
     $(document).on('click', '#register-btn', function(e){
-        const newUser = {
-            username = $('#username').val(),
-            email = $('#email').val,
-            password = $('#password').val(),
+        const reqBody = {
+            username: $('#username').val(),
+            email: $('#email').val(),
+            password: $('#password').val()
         }
 
         const options = {
-            headers:{
-                "content-type": "application/json"
+            headers: {
+                "Content-Type":"application/json"
             },
-            method:'POST',
+            method: 'POST',
             body: JSON.stringify(reqBody)
         }
 
         fetch("http://localhost:8080/api/users", options)
-            .then(res => res.josn())
+            .then(res => res.json())
             .then(data => console.log(data))
             .catch(err => console.log(err))
+
     })
 }
