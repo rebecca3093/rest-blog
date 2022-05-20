@@ -1,8 +1,8 @@
 import createView from "../createView.js";
 
-const BASE_URL = `http:localhost:8080/api/posts`;
-let requestedMethod = "POST";
-let postID = "";
+const BASE_URL = `http:localhost:8080/posts`;
+let requestMethod = "POST";
+let postId = "";
 
 export default function PostIndex(props) {
     // language=HTML
@@ -34,8 +34,9 @@ export default function PostIndex(props) {
 export function PostsEvent() {
     createAddPostListener();
     createEditPostListener();
-    createDeletePostListener();
+
 }
+
 
 function createAddPostListener() {
     $(document).on('click', '#submit-btn', function (e) {
@@ -46,8 +47,9 @@ function createAddPostListener() {
             content: $("#postContent").val()
         }
 
+
         const request = {
-            method: requestedMethod,
+            method: requestMethod,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -56,7 +58,7 @@ function createAddPostListener() {
 
         let requestUrl = "";
 
-        if (postID !== "") {
+        if (postId !== "") {
             requestUrl = '${BASE_URL}/${postID}';
         } else {
             requestUrl = '${BASE_URL}';
@@ -68,8 +70,8 @@ function createAddPostListener() {
             }).catch(error => {
             console.log(error);
         }).finally(() => {
-            postID = "";
-            requestedMethod = "POST";
+            postId = "";
+            requestMethod = "POST";
             createView("/posts")
         })
     })
@@ -78,8 +80,8 @@ function createAddPostListener() {
 function createEditPostListener() {
     $(document).on('click', '.edit-button', function (e) {
         e.preventDefault();
-        postID = $(this).data("id");
-        requestedMethod = "PUT";
+        postId = $(this).data("id");
+        requestMethod = "PUT";
 
         const postTitle = $(`title-${postId}`).text();
         const postContent = $(`#content-${postId}`).text();
@@ -87,20 +89,17 @@ function createEditPostListener() {
         $("#add-post-title").val(postTitle);
         $("#add-post-content").val(postContent);
 
-        console.log(postID);
-        console.log(requestedMethod);
+        console.log(postId);
+        console.log(requestMethod);
     })
 
     function createDeletePostListener() {
         $(document).on('click', '.delete-button', function (e) {
             e.preventDefault();
-
             const id = $(this).data("id");
-
             const request = {
                 method: "DELETE"
             }
-
             fetch(`${BASE_URL}/${id}`, request)
                 .then(res => {
                     console.log(res.status);
@@ -111,4 +110,7 @@ function createEditPostListener() {
             })
         })
     }
+
+
+
 }
