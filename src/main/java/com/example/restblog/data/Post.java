@@ -1,9 +1,25 @@
 package com.example.restblog.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import nonapi.io.github.classgraph.json.Id;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import javax.persistence.*;
+
+
+@Entity
+@Table(name="posts")
 public class Post {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
+
+    @ManyToOne
+    @JsonIgnoreProperties("posts")
+    private User user;
 
     public Post() {
     }
@@ -37,6 +53,14 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

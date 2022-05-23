@@ -3,8 +3,13 @@ package com.example.restblog.data;
 import javax.management.relation.Role;
 import java.time.LocalDateTime;
 
+
+@Entity
+@Table(name="users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = Generat)
     private Long id;
     private String username;
     private String email;
