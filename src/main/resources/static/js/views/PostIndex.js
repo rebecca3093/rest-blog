@@ -92,6 +92,7 @@ function createEditPostListener() {
         console.log(postId);
         console.log(requestMethod);
     })
+}
 
     function createDeletePostListener() {
         $(document).on('click', '.delete-button', function (e) {
