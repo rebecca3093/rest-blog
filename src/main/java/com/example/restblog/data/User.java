@@ -1,21 +1,32 @@
 package com.example.restblog.data;
 
-import javax.management.relation.Role;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import nonapi.io.github.classgraph.json.Id;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="users")
+@DynamicUpdate
 public class User {
 
     @Id
-    @GeneratedValue(strategy = Generat)
+    @GeneratedValue(strategy = GenerationType.Identiy)
     private Long id;
     private String username;
     private String email;
     private String password;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    private List<Post> posts = new ArrayList<>();
 
     public enum Role {USER, ADMIN}
 
@@ -34,7 +45,6 @@ public class User {
     }
 
     public User() {
-
     }
 
     public Long getId() {
@@ -83,6 +93,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

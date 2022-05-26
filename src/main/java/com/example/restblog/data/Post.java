@@ -1,14 +1,16 @@
 package com.example.restblog.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import nonapi.io.github.classgraph.json.Id;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Locale;
 
 
 @Entity
 @Table(name="posts")
+@DynamicUpdate
 public class Post {
 
     @Id
@@ -18,8 +20,23 @@ public class Post {
     private String content;
 
     @ManyToOne
-    @JsonIgnoreProperties("posts")
+    @JsonIgnoreProperties({"posts", "password"})
     private User user;
+
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH},
+            targetEntity = Locale.Category.class)
+    @JoinTable(
+            name="post_category",
+            joinColumns = {@JoinColumn(name = "post_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name="category_id", nullable = false, updatable = false)},
+            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
+            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
+    )
+    @JsonIgnoreProperties("posts")
+    private Collection<Category> categories;
 
     public Post() {
     }
@@ -61,6 +78,14 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Collection<Locale.Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<Locale.Category> categories) {
+        this.categories = categories;
     }
 
     @Override
