@@ -1,6 +1,8 @@
 package com.example.restblog.web;
 
+import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
+import com.example.restblog.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,52 +14,55 @@ import java.util.List;
 @RequestMapping(value = "/api/users", headers = "Accept=application/json")
 public class UsersController {
 
-    private List<User> userList = setUserList();
+    // Once the adding and getting of users is removed, we have to inject the UserService into the controller
+    private final UserService userService;
+
+    public UsersController(UserService userService) {
+        this.userService = userService; // injection point of UserService
+    }
 
     @GetMapping
-    public List<User> getAll() {
-        return userList;
-
+    public List<User> getAll(){
+        return userService.getUsersList();
     }
 
     @GetMapping("{id}")
-    public User getById(@PathVariable long id) {
-        for (User user : userList) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-        return null;
+    public User getById(@PathVariable long id){
+        return userService.getUserById(id);
     }
 
     @PostMapping
-    public void create(@RequestBody User newUser) {
-        userList.add(newUser);
+    public void create(@RequestBody User newUser){
+        userService.getUsersList().add(newUser);
+    }
+
+    @PostMapping("{username}")
+    public void addUserPost(@PathVariable String username, @RequestBody Post newPost){
+        User user = userService.getUserByUsername(username);
+        user.getPosts().add(newPost);
     }
 
     @GetMapping("username")
-    public User getByUsername(@RequestParam String username){
-        System.out.println("Getting user with username" + username);
-        return null;
+    public User getByUsername(@RequestParam String username) {
+        System.out.println("Getting user with username: " + username);
+        return userService.getUserByUsername(username);
     }
 
     @GetMapping("email")
-    public User getByEmail(@RequestParam String email){
-        System.out.println("Getting user with email" + email);
+    public User getByEmail(@RequestParam String email) {
+        System.out.println("Getting user with email: " + email);
         return null;
     }
 
     @PutMapping("{id}/updatePassword")
-    public void updatePassword ( @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword){
+    public void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
         User userToUpdate = getById(id);
         userToUpdate.setPassword(newPassword);
         System.out.println(userToUpdate.getPassword());
     }
 
-    private List<User> setUserList() {
-        List<User> userList = new ArrayList<>();
-        userList.add(new User(1L,"haylieWilliams", "hailey@williams.com", "12345"));
-        userList.add(new User(2L,"patrickStump", "patrick@stump.com", "54321"));
-        return userList;
+    @PatchMapping("{userId}")
+    public void updateEmail(@PathVariable Long userId, @RequestParam String newEmail){
+        userService.updateEmail(userId, newEmail);
     }
 }

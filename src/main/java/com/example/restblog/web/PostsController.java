@@ -1,9 +1,11 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.Post;
+import com.example.restblog.dto.CreatePostDto;
+import com.example.restblog.service.PostService;
+import com.example.restblog.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,57 +14,53 @@ import java.util.Objects;
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
-    List<Post> posts = setPostList();
+    private final PostService postService;
 
-    // List<Post> posts = new ArrayList<>();
-
+    public PostsController(
+            PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
     public List<Post> getAll() {
-        //posts.add(new Post(1L, "This is my first title", "This is some content"));
-        //posts.add(new Post(2L, "This is my second title", "This is more content"));
-        //posts.add(new Post(3L, "This is my third title", "This is even more content"));
-        return posts;
+        return postService.getPostList();
     }
 
     @GetMapping("{id}")
     public Post getById(@PathVariable Long id) {
-        for (Post post : getAll()) {
+
+        for (Post post : postService.getPostList()) {
             if (Objects.equals(post.getId(), id)) {
                 return post;
             }
         }
-        return new Post();
+        return null;
     }
 
     @PostMapping
-    public void createPost(@RequestBody Post postItem) {
-        System.out.println(postItem);
+    public void createPost(@RequestBody Post postToAdd) {
 
+        System.out.println(postToAdd);
+    }
+
+    @PostMapping("{username}")
+    public void createByUsername(@PathVariable String username, @RequestBody CreatePostDto dto) {
+        Post newPost = new Post();
+        postService.addPost(dto, newPost, username);
     }
 
     @PutMapping("{id}")
-    public void updatePost(@PathVariable Long id, @RequestBody Post updatePost) {
-        for (Post post :posts){
-            if (post.getId().equals(id)){
-                post.setContent(updatePost.getContent());
-                post.setTitle(updatePost.getTitle());
-            }
-        }
-        System.out.println(updatePost);
+    public void updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
+        postService.updatePost(id, updatedPost);
     }
 
     @DeleteMapping("{id}")
     public void deletePost(@PathVariable Long id) {
-        System.out.println("Delete Post with id: " + id);
+        postService.deletePostById(id);
     }
 
-    private List<Post> setPostList(){
-        List<Post> postList = new ArrayList<>();
-        postList.add(new Post(1L, "This is my first title", "This is some content"));
-        postList.add(new Post(2L, "This is my second title", "This is more content"));
-        postList.add(new Post(3L, "This is my third title", "This is even more content"));
-        return postList;
+    @GetMapping("search")
+    public List<Post> searchPosts(@RequestParam String keyword) {
+        return postService.getPostsByTitleKeyword(keyword);
     }
 }
-

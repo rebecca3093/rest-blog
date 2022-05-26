@@ -1,6 +1,7 @@
 package com.example.restblog.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import nonapi.io.github.classgraph.json.Id;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -9,12 +10,12 @@ import java.util.Locale;
 
 
 @Entity
-@Table(name="posts")
+@Table(name = "posts")
 @DynamicUpdate
 public class Post {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
@@ -29,14 +30,14 @@ public class Post {
             cascade = {CascadeType.DETACH, CascadeType.REFRESH},
             targetEntity = Locale.Category.class)
     @JoinTable(
-            name="post_category",
+            name = "post_category",
             joinColumns = {@JoinColumn(name = "post_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name="category_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", nullable = false, updatable = false)},
             foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
     )
     @JsonIgnoreProperties("posts")
-    private Collection<Category> categories;
+    private Collection<Locale.Category> categories;
 
     public Post() {
     }

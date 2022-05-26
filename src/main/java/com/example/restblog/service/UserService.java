@@ -10,52 +10,31 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
 
-    private final PostsRepository postsRepository;
+    private final UsersRepository usersRepository;
 
-    public UserService(UserRepository userRepository, PostsRepository postsRepository) {
-        this.userRepository = userRepository;
-        this.postsRepository = postsRepository;
+    public UserService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
+
+    public List<User> getUsersList() { //
+        return usersRepository.findAll();
     }
 
 
-    /*<Public> Public UserService(UserRepository userRepository, PostsRepository postsRepository){
-        this.userRepository = userRepository;
-        this.postsRepository = postsRepository;
-    }*/
-
-    public List<User> getUserList(){
-        return userRepository.findAll();
+    public User getUserById(Long id) {
+        return usersRepository.findById(id).orElseThrow();
     }
 
-    public List<Post> getPostList(){
-        return postsRepository.findAll();
+    public User getUserByUsername(String username) {
+        return usersRepository.findByUsername(username);
     }
 
-    public void addPost (Post newPost, String username){
-
-        User user = getUserByUsername(username);
-
-        user.getPosts().add(newPost);
-        newPost.setUser(user);
-
-        postsRepository.save(newPost);
-
+    public void updateEmail(Long userId, String newEmail){
+        User user = getUserById(userId);
+        user.setEmail(newEmail);
+        usersRepository.save(user);
     }
-
-    public User getUserbyId(Long id){
-        return userRepository.findById(id).orElseThrow();
-    }
-
-    public User getUserByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-
-    public void deletePostById(long id){
-        postsRepository.deleteById(id);
-    }
-
 
 
 
